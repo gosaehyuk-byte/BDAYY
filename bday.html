@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Akira! 🎉</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Outfit:wght@300;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        :root {
+            --coral: #FF6B6B;
+            --candy: #FFE66D;
+            --mint: #4ECDC4;
+            --cream: #FFF8E7;
+            --dark: #2D3436;
+            --lavender: #A29BFE;
+            --pink: #FD79A8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Background Stars */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.5); }
+        }
+
+        /* Floating Decorations */
+        .floating-items {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .floating-item {
+            position: absolute;
+            font-size: 2.5rem;
+            animation: floatAround 15s linear infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes floatAround {
+            0% { transform: translateY(100vh) rotate(0deg); }
+            100% { transform: translateY(-100px) rotate(360deg); }
+        }
+
+        /* Main Card */
+        .card {
+            position: relative;
+            z-index: 10;
+            max-width: 500px;
+            margin: 20px auto;
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            border-radius: 40px;
+            padding: 40px 30px;
+            box-shadow: 
+                0 30px 60px rgba(0,0,0,0.15),
+                0 0 0 8px white,
+                0 0 0 10px var(--coral);
+            animation: cardEntrance 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        @keyframes cardEntrance {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Banner */
+        .banner {
+            background: linear-gradient(90deg, var(--coral), var(--pink), var(--lavender));
+            padding: 15px 20px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 300%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            to { left: 100%; }
+        }
+
+        .banner h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.8rem;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        /* Photo Frame */
+        .photo-frame {
+            position: relative;
+            width: 100%;
+            height: 280px;
+            border-radius: 25px;
+            overflow: hidden;
+            margin-bottom: 25px;
+            box-shadow: 
+                inset 0 0 0 5px var(--cream),
+                inset 0 0 0 8px var(--coral),
+                0 15px 30px rgba(0,0,0,0.2);
+            background: linear-gradient(45deg, var(--mint), var(--lavender));
+        }
+
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .photo-frame:hover img {
+            transform: scale(1.1);
+        }
+
+        .photo-frame .frame-decoration {
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            font-size: 3rem;
+            z-index: 5;
+        }
+
+        /* Sticker Badges */
+        .stickers {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .sticker {
+            font-size: 2.5rem;
+            animation: bounce 2s ease-in-out infinite;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .sticker:nth-child(2) { animation-delay: 0.3s; }
+        .sticker:nth-child(3) { animation-delay: 0.6s; }
+        .sticker:nth-child(4) { animation-delay: 0.9s; }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .sticker:hover {
+            transform: scale(1.3) rotate(15deg);
+        }
+
+        /* Message Section */
+        .message-section {
+            background: linear-gradient(135deg, var(--cream), #fff);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .message-section::before {
+            content: '✦';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            font-size: 1.5rem;
+            color: var(--coral);
+            background: white;
+            padding: 0 8px;
+        }
+
+        .message-line {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--dark);
+            margin-bottom: 15px;
+            padding-left: 15px;
+            border-left: 3px solid var(--mint);
+        }
+
+        .message-line:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Signature */
+        .signature {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            color: var(--coral);
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        /* Celebration Button */
+        .celebrate-btn {
+            width: 100%;
+            padding: 18px 30px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: white;
+            background: linear-gradient(135deg, var(--coral), var(--pink));
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .celebrate-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .celebrate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(255, 107, 107, 0.5);
+        }
+
+        .celebrate-btn:hover::before {
+            left: 100%;
+        }
+
+        .celebrate-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Decorative Corners */
+        .corner-decor {
+            position: absolute;
+            font-size: 1.8rem;
+            color: var(--candy);
+            z-index: 5;
+        }
+
+        .corner-decor.tl { top: 15px; left: 15px; }
+        .corner-decor.tr { top: 15px; right: 15px; transform: rotate(90deg); }
+        .corner-decor.bl { bottom: 15px; left: 15px; transform: rotate(-90deg); }
+        .corner-decor.br { bottom: 15px; right: 15px; transform: rotate(180deg); }
+
+        /* Responsive */
+        @media (max-width: 540px) {
+            .card {
+                margin: 15px;
+                padding: 30px 20px;
+            }
+
+            .banner h1 {
+                font-size: 2.2rem;
+            }
+
+            .photo-frame {
+                height: 220px;
+            }
+
+            .message-line {
+                font-size: 0.95rem;
+            }
+
+            .sticker {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Animated Stars Background -->
+    <div class="stars" id="stars"></div>
+
+    <!-- Floating Items -->
+    <div class="floating-items" id="floatingItems"></div>
+
+    <!-- Main Card -->
+    <div class="card">
+        <span class="corner-decor tl">❀</span>
+        <span class="corner-decor tr">❀</span>
+        <span class="corner-decor bl">❀</span>
+        <span class="corner-decor br">❀</span>
+
+        <div class="banner">
+            <h1>Happy Birthday Akira!</h1>
+        </div>
+
+        <!-- Sticker Badges -->
+        <div class="stickers">
+            <span class="sticker" title="Love">❤️</span>
+            <span class="sticker" title="Party">🎉</span>
+            <span class="sticker" title="Star">⭐</span>
+            <span class="sticker" title="Cake">🎂</span>
+        </div>
+
+        <!-- Photo Frame - REPLACE THE SRC WITH YOUR PHOTO/GIF -->
+        <div class="photo-frame">
+            <img src="https://media1.tenor.com/images/555d226b1967c9dc3581feefdcccbd10/tenor.gif?itemid=16094611" 
+                 alt="Birthday Memory">
+            <div class="frame-decoration">👑</div>
+        </div>
+
+        <!-- Message Section -->
+        <div class="message-section">
+            <p class="message-line">Happy Birthday, Twin! Seeing you grow through the years makes me really proud. You deserve all the happiness, peace, success, and love in the world because you genuinely have such a good heart. </p>
+            <p class="message-line">I hope this year gives you more opportunities, more achievements, genuine people around you, and moments that will make you truly happy. </p>
+            <p class="message-line">No matter how busy life gets or wherever we end up in the future, I hope our Scentrio stays the same. Thank you for being one of the constants in my life. Life wouldn't be as fun and meaningful without you bakz 🎈</p>
+        </div>
+
+        <!-- Signature -->
+        <div class="signature">— mwaps craige 💕</div>
+
+        <!-- Celebration Button -->
+        <button class="celebrate-btn" onclick="celebrate()">
+            🎊 Click to Celebrate! 🎊
+        </button>
+    </div>
+
+    <script>
+        // === CREATE STARS BACKGROUND ===
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starCount = 50;
+
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 2 + 's';
+                star.style.width = (Math.random() * 4 + 2) + 'px';
+                star.style.height = star.style.width;
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // === CREATE FLOATING ITEMS ===
+        function createFloatingItems() {
+            const container = document.getElementById('floatingItems');
+            const emojis = ['🎈', '🎉', '⭐', '✨', '💫', '🌟', '🎁', '🎂', '🧁', '🍰'];
+            const itemCount = 15;
+
+            for (let i = 0; i < itemCount; i++) {
+                const item = document.createElement('div');
+                item.className = 'floating-item';
+                item.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                item.style.left = Math.random() * 100 + '%';
+                item.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                item.style.animationDelay = Math.random() * 10 + 's';
+                item.style.fontSize = (Math.random() * 1.5 + 1.5) + 'rem';
+                container.appendChild(item);
+            }
+        }
+
+        // === CONFETTI CELEBRATION ===
+        function celebrate() {
+            // Stage 1: Big burst from center
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { x: 0.5, y: 0.5 },
+                colors: ['#FF6B6B', '#FFE66D', '#4ECDC4', '#A29BFE', '#FD79A8'],
+                ticks: 50,
+                gravity: 0.8,
+                decay: 0.94,
+                startVelocity: 30
+            });
+
+            // Stage 2: Side cannons
+            setTimeout(() => {
+                var end = Date.now() + 1000;
+                
+                var interval = setInterval(function() {
+                    if (Date.now() > end) {
+                        return clearInterval(interval);
+                    }
+                    
+                    confetti({
+                        particleCount: 3,
+                        angle: 60,
+                        spread: 55,
+                        origin: { x: 0, y: 0.7 },
+                        colors: ['#FF6B6B', '#FD79A8']
+                    });
+                    confetti({
+                        particleCount: 3,
+                        angle: 120,
+                        spread: 55,
+                        origin: { x: 1, y: 0.7 },
+                        colors: ['#4ECDC4', '#A29BFE']
+                    });
+                }, 30);
+            }, 500);
+
+            // Stage 3: Continuous rain
+            setTimeout(() => {
+                var end = Date.now() + 2000;
+                var interval = setInterval(function() {
+                    if (Date.now() > end) {
+                        return clearInterval(interval);
+                    }
+                    
+                    confetti({
+                        particleCount: 5,
+                        spread: 100,
+                        origin: { x: Math.random(), y: -0.1 },
+                        colors: ['#FFE66D', '#FF6B6B', '#4ECDC4'],
+                        ticks: 50,
+                        gravity: 1.2,
+                        startVelocity: 20
+                    });
+                }, 100);
+            }, 1500);
+
+            // Stage 4: Final massive burst
+            setTimeout(() => {
+                confetti({
+                    particleCount: 200,
+                    angle: 90,
+                    spread: 100,
+                    origin: { x: 0.5, y: 0.5 },
+                    colors: ['#FFD700', '#FF6B6B', '#FFFFFF', '#4ECDC4'],
+                    ticks: 80,
+                    gravity: 0.5,
+                    decay: 0.9,
+                    startVelocity: 40
+                });
+            }, 2500);
+        }
+
+        // Initialize on page load
+        window.onload = function() {
+            createStars();
+            createFloatingItems();
+        };
+    </script>
+</body>
+</html>
